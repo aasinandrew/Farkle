@@ -32,6 +32,9 @@
 @property int fives;
 @property int sixes;
 @property (weak, nonatomic) IBOutlet UIButton *rollButton;
+@property UIDynamicAnimator *dynamicAnimator;
+@property (weak, nonatomic) IBOutlet UILabel *gatherDiceLabel;
+@property BOOL areDiceGathered;
 
 
 @end
@@ -41,7 +44,43 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self reset];
+    self.rollButton.enabled = NO;
+    self.dieLabel.value = 5;
+    self.dieLabel.isTapped = NO;
+    [self.dieLabel displayNumber:5];
+    self.dieLabel.hidden = NO;
+    self.dieLabel.origin = self.dieLabel.frame.origin;
+
+    self.dieLabel2.value = 4;
+    self.dieLabel2.isTapped = NO;
+    [self.dieLabel2 displayNumber:4];
+    self.dieLabel2.hidden = NO;
+    self.dieLabel2.origin = self.dieLabel2.frame.origin;
+
+    self.dieLabel3.value = 5;
+    self.dieLabel3.isTapped = NO;
+    [self.dieLabel3 displayNumber:5];
+    self.dieLabel3.hidden = NO;
+    self.dieLabel3.origin = self.dieLabel3.frame.origin;
+
+    self.dieLabel4.value = 6;
+    self.dieLabel4.isTapped = NO;
+    [self.dieLabel4 displayNumber:6];
+    self.dieLabel4.hidden = NO;
+    self.dieLabel4.origin = self.dieLabel4.frame.origin;
+
+    self.dieLabel5.value = 2;
+    self.dieLabel5.isTapped = NO;
+    [self.dieLabel5 displayNumber:2];
+    self.dieLabel5.hidden = NO;
+    self.dieLabel5.origin = self.dieLabel5.frame.origin;
+
+    self.dieLabel6.value = 3;
+    self.dieLabel6.isTapped = NO;
+    [self.dieLabel6 displayNumber:3];
+    self.dieLabel6.hidden = NO;
+    self.dieLabel6.origin = self.dieLabel6.frame.origin;
+
 
 
     self.dieLabel.delegate = self;
@@ -70,12 +109,72 @@
     self.fours = 0;
     self.fives = 0;
     self.sixes = 0;
+    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(retrieveDice)];
+    [self.gatherDiceLabel setUserInteractionEnabled:YES];
+    [self.gatherDiceLabel addGestureRecognizer:tapGesture];
+}
+
+-(void)rollDice {
+    self.gatherDiceLabel.userInteractionEnabled = NO;
+    [self.dynamicAnimator removeAllBehaviors];
+    UISnapBehavior *snapBehavior;
+    CGPoint point;
+    point = CGPointMake(self.dieLabel.origin.x + 40, self.dieLabel.origin.y + 40);
+    snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel snapToPoint:point];
+    [self.dynamicAnimator addBehavior:snapBehavior];
+    point = CGPointMake(self.dieLabel2.origin.x + 40, self.dieLabel2.origin.y + 40);
+    snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel2 snapToPoint:point];
+    [self.dynamicAnimator addBehavior:snapBehavior];
+    point = CGPointMake(self.dieLabel3.origin.x + 40, self.dieLabel3.origin.y + 40);
+    snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel3 snapToPoint:point];
+    [self.dynamicAnimator addBehavior:snapBehavior];
+    point = CGPointMake(self.dieLabel4.origin.x + 40, self.dieLabel4.origin.y + 40);
+    snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel4 snapToPoint:point];
+    [self.dynamicAnimator addBehavior:snapBehavior];
+    point = CGPointMake(self.dieLabel5.origin.x + 40, self.dieLabel5.origin.y + 40);
+    snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel5 snapToPoint:point];
+    [self.dynamicAnimator addBehavior:snapBehavior];
+    point = CGPointMake(self.dieLabel6.origin.x + 40, self.dieLabel6.origin.y + 40);
+    snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel6 snapToPoint:point];
+    [self.dynamicAnimator addBehavior:snapBehavior];
 
 
 }
 
+-(void)retrieveDice {
+    self.rollButton.enabled = YES;
+    [self.dynamicAnimator removeAllBehaviors];
+    if (!self.dieLabel.isTapped) {
+        UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+    if (!self.dieLabel2.isTapped) {
+        UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel2 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+    if (!self.dieLabel3.isTapped) {
+        UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel3 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+    if (!self.dieLabel4.isTapped) {
+        UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel4 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+    if (!self.dieLabel5.isTapped) {
+        UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel5 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+    if (!self.dieLabel6.isTapped) {
+        UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel6 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+}
+
 - (IBAction)onRollButtonPressed:(UIButton *)sender {
 
+    [self rollDice];
     if (![self.dice containsObject:self.dieLabel]) {
         [self.dieLabel roll];
     }
@@ -95,12 +194,6 @@
         [self.dieLabel6 roll];
     }
 
-    self.dieLabel.hidden = NO;
-    self.dieLabel2.hidden = NO;
-    self.dieLabel3.hidden = NO;
-    self.dieLabel4.hidden = NO;
-    self.dieLabel5.hidden = NO;
-    self.dieLabel6.hidden = NO;
     BOOL isTriple = [self checkTriple];
     if (!isTriple) {
         [self checkFarkle];
@@ -118,8 +211,7 @@
 
 -(void)dieLabel:(DieLabel *)dieLabel {
     if (![self.dice containsObject:dieLabel]) {
-        self.rollButton.enabled = YES;
-        //dieLabel.isTapped = YES;
+        self.gatherDiceLabel.userInteractionEnabled = YES;
         [self.dice addObject:dieLabel];
 
         switch (dieLabel.value) {
@@ -154,13 +246,8 @@
     self.dieLabel4.isTapped = NO;
     self.dieLabel5.isTapped = NO;
     self.dieLabel6.isTapped = NO;
-    self.dieLabel.hidden = YES;
-    self.dieLabel2.hidden = YES;
-    self.dieLabel3.hidden = YES;
-    self.dieLabel4.hidden = YES;
-    self.dieLabel5.hidden = YES;
-    self.dieLabel6.hidden = YES;
-    self.rollButton.enabled = YES;
+    self.rollButton.enabled = NO;
+    self.gatherDiceLabel.userInteractionEnabled = YES;
 }
 
 
@@ -618,6 +705,50 @@
              self.dieLabel6.isTapped) {
         if (self.dieLabel3.value != 1 && self.dieLabel3.value != 5 &&
             self.dieLabel4.value != 1 && self.dieLabel4.value != 5) {
+            [self farkle];
+        }
+    }
+    else if (self.dieLabel.isTapped   &&
+             !self.dieLabel2.isTapped   &&
+             self.dieLabel3.isTapped   &&
+             self.dieLabel4.isTapped   &&
+             self.dieLabel5.isTapped   &&
+             !self.dieLabel6.isTapped) {
+        if (self.dieLabel2.value != 1 && self.dieLabel2.value != 5 &&
+            self.dieLabel6.value != 1 && self.dieLabel6.value != 5) {
+            [self farkle];
+        }
+    }
+    else if (self.dieLabel.isTapped   &&
+             !self.dieLabel2.isTapped   &&
+             self.dieLabel3.isTapped   &&
+             self.dieLabel4.isTapped   &&
+             !self.dieLabel5.isTapped   &&
+             self.dieLabel6.isTapped) {
+        if (self.dieLabel2.value != 1 && self.dieLabel2.value != 5 &&
+            self.dieLabel5.value != 1 && self.dieLabel5.value != 5) {
+            [self farkle];
+        }
+    }
+    else if (self.dieLabel.isTapped   &&
+             !self.dieLabel2.isTapped   &&
+             self.dieLabel3.isTapped   &&
+             !self.dieLabel4.isTapped   &&
+             self.dieLabel5.isTapped   &&
+             self.dieLabel6.isTapped) {
+        if (self.dieLabel2.value != 1 && self.dieLabel2.value != 5 &&
+            self.dieLabel4.value != 1 && self.dieLabel4.value != 5) {
+            [self farkle];
+        }
+    }
+    else if (self.dieLabel.isTapped   &&
+             !self.dieLabel2.isTapped   &&
+             !self.dieLabel3.isTapped   &&
+             self.dieLabel4.isTapped   &&
+             self.dieLabel5.isTapped   &&
+             self.dieLabel6.isTapped) {
+        if (self.dieLabel2.value != 1 && self.dieLabel2.value != 5 &&
+            self.dieLabel3.value != 1 && self.dieLabel3.value != 5) {
             [self farkle];
         }
     }

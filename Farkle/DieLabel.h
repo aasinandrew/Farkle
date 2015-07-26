@@ -13,8 +13,10 @@
 @property (weak, nonatomic) IBOutlet id <DieLabelDelegate> delegate;
 @property int value;
 @property BOOL isTapped;
+@property CGPoint origin;
 
 -(void)roll;
+-(void)displayNumber:(int)number;
 
 @end
 
@@ -22,6 +24,6 @@
 @optional
 
 -(void)dieLabel:(DieLabel *)dieLabel;
--(void)displayNumber:(int)number;
+
 
 @end
