@@ -14,6 +14,7 @@
 		BB315CEB1B61824600C4E5AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB315CEA1B61824600C4E5AB /* Images.xcassets */; };
 		BB315CEE1B61824600C4E5AB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB315CEC1B61824600C4E5AB /* LaunchScreen.xib */; };
 		BB315CFA1B61824600C4E5AB /* FarkleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BB315CF91B61824600C4E5AB /* FarkleTests.m */; };
+		BB315D051B6184A200C4E5AB /* DieLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BB315D041B6184A200C4E5AB /* DieLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		BB315CF31B61824600C4E5AB /* FarkleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FarkleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB315CF81B61824600C4E5AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB315CF91B61824600C4E5AB /* FarkleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FarkleTests.m; sourceTree = "<group>"; };
+		BB315D031B6184A200C4E5AB /* DieLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DieLabel.h; sourceTree = "<group>"; };
+		BB315D041B6184A200C4E5AB /* DieLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DieLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 				BB315CE21B61824600C4E5AB /* AppDelegate.m */,
 				BB315CE41B61824600C4E5AB /* ViewController.h */,
 				BB315CE51B61824600C4E5AB /* ViewController.m */,
+				BB315D031B6184A200C4E5AB /* DieLabel.h */,
+				BB315D041B6184A200C4E5AB /* DieLabel.m */,
 				BB315CE71B61824600C4E5AB /* Main.storyboard */,
 				BB315CEA1B61824600C4E5AB /* Images.xcassets */,
 				BB315CEC1B61824600C4E5AB /* LaunchScreen.xib */,
@@ -222,6 +227,7 @@
 				BB315CE61B61824600C4E5AB /* ViewController.m in Sources */,
 				BB315CE31B61824600C4E5AB /* AppDelegate.m in Sources */,
 				BB315CE01B61824600C4E5AB /* main.m in Sources */,
+				BB315D051B6184A200C4E5AB /* DieLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +288,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
