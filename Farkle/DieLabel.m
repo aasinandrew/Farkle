@@ -12,7 +12,6 @@
 
 -(void)roll {
     int rand =  (int) arc4random_uniform(6) + 1;
-    //self.text = [NSString stringWithFormat:@"%i", rand];
     self.value = rand;
     [self displayNumber:rand];
 }
@@ -28,8 +27,6 @@
 }
 
 - (void)labelClicked:(UIGestureRecognizer *)g {
-    self.isTapped = YES;
-    [self displayNumber:self.value];
     [self.delegate dieLabel:self];
 }
 

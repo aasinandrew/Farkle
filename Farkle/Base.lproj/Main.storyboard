@@ -113,13 +113,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 1 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHk-gz-ttp">
-                                <rect key="frame" x="37" y="20" width="162" height="39"/>
+                                <rect key="frame" x="37" y="20" width="195" height="39"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 2 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R7j-DW-Qwg">
-                                <rect key="frame" x="37" y="67" width="162" height="39"/>
+                                <rect key="frame" x="37" y="67" width="195" height="39"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -132,6 +132,12 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gather Dice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uGO-Pm-3tD">
                                 <rect key="frame" x="130" y="554" width="92" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 1's Turn" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1e-aO-3WK">
+                                <rect key="frame" x="107" y="143" width="114" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -153,6 +159,8 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="bankButton" destination="iqW-tO-mvy" id="mDJ-LC-QJt"/>
+                        <outlet property="currentPlayerLabel" destination="y1e-aO-3WK" id="yNg-x6-y8m"/>
                         <outlet property="currentScore" destination="v0g-tZ-HWN" id="MSk-XL-Sd0"/>
                         <outlet property="dieLabel" destination="vdZ-24-WiC" id="xrL-Sx-NUh"/>
                         <outlet property="dieLabel2" destination="toY-gL-DsX" id="PrC-B3-JSM"/>

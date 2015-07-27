@@ -34,52 +34,77 @@
 @property (weak, nonatomic) IBOutlet UIButton *rollButton;
 @property UIDynamicAnimator *dynamicAnimator;
 @property (weak, nonatomic) IBOutlet UILabel *gatherDiceLabel;
-@property BOOL areDiceGathered;
+@property int currentRoundSelectedDice;
+@property (weak, nonatomic) IBOutlet UILabel *currentPlayerLabel;
+@property (weak, nonatomic) IBOutlet UIButton *bankButton;
+
 
 
 @end
 
 @implementation ViewController
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setUpGame];
+}
 
+#pragma mark - Helper Methods
+- (void)setUpGame {
+
+    self.bankButton.enabled = NO;
+    self.currentPlayerLabel.text = @"Player 1's Turn";
+    self.currentRoundSelectedDice = 0;
     self.rollButton.enabled = NO;
     self.dieLabel.value = 5;
     self.dieLabel.isTapped = NO;
     [self.dieLabel displayNumber:5];
     self.dieLabel.hidden = NO;
     self.dieLabel.origin = self.dieLabel.frame.origin;
+    self.dieLabel.userInteractionEnabled = NO;
+    self.dieLabel.hasScored = NO;
 
     self.dieLabel2.value = 4;
     self.dieLabel2.isTapped = NO;
     [self.dieLabel2 displayNumber:4];
     self.dieLabel2.hidden = NO;
     self.dieLabel2.origin = self.dieLabel2.frame.origin;
+    self.dieLabel2.userInteractionEnabled = NO;
+    self.dieLabel2.hasScored = NO;
 
     self.dieLabel3.value = 5;
     self.dieLabel3.isTapped = NO;
     [self.dieLabel3 displayNumber:5];
     self.dieLabel3.hidden = NO;
     self.dieLabel3.origin = self.dieLabel3.frame.origin;
+    self.dieLabel3.userInteractionEnabled = NO;
+    self.dieLabel3.hasScored = NO;
 
     self.dieLabel4.value = 6;
     self.dieLabel4.isTapped = NO;
     [self.dieLabel4 displayNumber:6];
     self.dieLabel4.hidden = NO;
     self.dieLabel4.origin = self.dieLabel4.frame.origin;
+    self.dieLabel4.userInteractionEnabled = NO;
+    self.dieLabel4.hasScored = NO;
 
     self.dieLabel5.value = 2;
     self.dieLabel5.isTapped = NO;
     [self.dieLabel5 displayNumber:2];
     self.dieLabel5.hidden = NO;
     self.dieLabel5.origin = self.dieLabel5.frame.origin;
+    self.dieLabel5.userInteractionEnabled = NO;
+    self.dieLabel5.hasScored = NO;
 
     self.dieLabel6.value = 3;
     self.dieLabel6.isTapped = NO;
     [self.dieLabel6 displayNumber:3];
     self.dieLabel6.hidden = NO;
     self.dieLabel6.origin = self.dieLabel6.frame.origin;
+    self.dieLabel6.userInteractionEnabled = NO;
+    self.dieLabel6.hasScored = NO;
 
 
 
@@ -116,28 +141,133 @@
     [self.gatherDiceLabel addGestureRecognizer:tapGesture];
 }
 
+-(void)reset{
+    self.dieLabel.isTapped = NO;
+    self.dieLabel2.isTapped = NO;
+    self.dieLabel3.isTapped = NO;
+    self.dieLabel4.isTapped = NO;
+    self.dieLabel5.isTapped = NO;
+    self.dieLabel6.isTapped = NO;
+    self.dieLabel.hasScored = NO;
+    self.dieLabel2.hasScored = NO;
+    self.dieLabel3.hasScored = NO;
+    self.dieLabel4.hasScored = NO;
+    self.dieLabel5.hasScored = NO;
+    self.dieLabel6.hasScored = NO;
+
+    self.rollButton.enabled = NO;
+    self.gatherDiceLabel.userInteractionEnabled = YES;
+}
+
+-(BOOL)checkHotDice {
+
+    if (self.dieLabel.hasScored &&
+        self.dieLabel2.hasScored &&
+        self.dieLabel3.hasScored &&
+        self.dieLabel4.hasScored &&
+        self.dieLabel5.hasScored &&
+        self.dieLabel6.hasScored)
+        return true;
+
+    return false;
+}
+
+-(void)hotDiceRoll {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"You have hot dice!" message:@"Roll Again" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:^{
+        [self.dice removeAllObjects];
+        [self reset];
+    }];
+}
+
+-(void)checkWinner {
+    if (self.playerOneScore >= 10000) {
+        [self winner:@"Player 1"];
+    }
+    else if (self.playerTwoScore >= 10000) {
+        [self winner:@"Player 2"];
+    }
+}
+
+-(void)winner:(NSString *)winner {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Winner!" message:[NSString stringWithFormat:@"%@ Won", winner] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Start a New Game" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:^{
+        [self viewDidLoad];
+    }];
+
+}
+
+#pragma mark - Gather/Roll Dice Methods
 -(void)rollDice {
     self.gatherDiceLabel.userInteractionEnabled = NO;
+
+    if (self.dieLabel.isTapped) {
+        self.dieLabel.userInteractionEnabled = NO;
+    }
+    else {
+        self.dieLabel.userInteractionEnabled = YES;
+    }
+    if (self.dieLabel2.isTapped) {
+        self.dieLabel2.userInteractionEnabled = NO;
+    }
+    else {
+        self.dieLabel2.userInteractionEnabled = YES;
+    }
+    if (self.dieLabel3.isTapped) {
+        self.dieLabel3.userInteractionEnabled = NO;
+    }
+    else {
+        self.dieLabel3.userInteractionEnabled = YES;
+    }
+    if (self.dieLabel4.isTapped) {
+        self.dieLabel4.userInteractionEnabled = NO;
+    }
+    else {
+        self.dieLabel4.userInteractionEnabled = YES;
+    }
+    if (self.dieLabel5.isTapped) {
+        self.dieLabel5.userInteractionEnabled = NO;
+    }
+    else {
+        self.dieLabel5.userInteractionEnabled = YES;
+    }
+    if (self.dieLabel6.isTapped) {
+        self.dieLabel6.userInteractionEnabled = NO;
+    }
+    else {
+        self.dieLabel6.userInteractionEnabled = YES;
+    }
+
     [self.dynamicAnimator removeAllBehaviors];
     UISnapBehavior *snapBehavior;
     CGPoint point;
     point = CGPointMake(self.dieLabel.origin.x + 40, self.dieLabel.origin.y + 40);
     snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel snapToPoint:point];
+    snapBehavior.damping = 0.1;
     [self.dynamicAnimator addBehavior:snapBehavior];
     point = CGPointMake(self.dieLabel2.origin.x + 40, self.dieLabel2.origin.y + 40);
     snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel2 snapToPoint:point];
+    snapBehavior.damping = 0.1;
     [self.dynamicAnimator addBehavior:snapBehavior];
     point = CGPointMake(self.dieLabel3.origin.x + 40, self.dieLabel3.origin.y + 40);
     snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel3 snapToPoint:point];
+    snapBehavior.damping = 0.1;
     [self.dynamicAnimator addBehavior:snapBehavior];
     point = CGPointMake(self.dieLabel4.origin.x + 40, self.dieLabel4.origin.y + 40);
     snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel4 snapToPoint:point];
+    snapBehavior.damping = 0.1;
     [self.dynamicAnimator addBehavior:snapBehavior];
     point = CGPointMake(self.dieLabel5.origin.x + 40, self.dieLabel5.origin.y + 40);
     snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel5 snapToPoint:point];
+    snapBehavior.damping = 0.1;
     [self.dynamicAnimator addBehavior:snapBehavior];
     point = CGPointMake(self.dieLabel6.origin.x + 40, self.dieLabel6.origin.y + 40);
     snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel6 snapToPoint:point];
+    snapBehavior.damping = 0.1;
     [self.dynamicAnimator addBehavior:snapBehavior];
 
 
@@ -148,27 +278,441 @@
     [self.dynamicAnimator removeAllBehaviors];
     if (!self.dieLabel.isTapped) {
         UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        snapBehavior.damping = 1;
         [self.dynamicAnimator addBehavior:snapBehavior];
     }
     if (!self.dieLabel2.isTapped) {
         UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel2 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        snapBehavior.damping = 1;
         [self.dynamicAnimator addBehavior:snapBehavior];
     }
     if (!self.dieLabel3.isTapped) {
         UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel3 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        snapBehavior.damping = 1;
         [self.dynamicAnimator addBehavior:snapBehavior];
     }
     if (!self.dieLabel4.isTapped) {
         UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel4 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        snapBehavior.damping = 1;
         [self.dynamicAnimator addBehavior:snapBehavior];
     }
     if (!self.dieLabel5.isTapped) {
         UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel5 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        snapBehavior.damping = 1;
         [self.dynamicAnimator addBehavior:snapBehavior];
     }
     if (!self.dieLabel6.isTapped) {
         UISnapBehavior *snapBehavior = [[UISnapBehavior alloc]initWithItem:self.dieLabel6 snapToPoint:CGPointMake(self.gatherDiceLabel.center.x + 100, self.gatherDiceLabel.center.y)];
+        snapBehavior.damping = 1;
         [self.dynamicAnimator addBehavior:snapBehavior];
+    }
+}
+
+
+
+
+#pragma mark - DieLabel Delegate Method
+-(void)dieLabel:(DieLabel *)dieLabel {
+
+    if (![self.dice containsObject:dieLabel]) {
+        self.currentRoundSelectedDice++;
+        dieLabel.isTapped = YES;
+        [dieLabel displayNumber:dieLabel.value];
+        self.gatherDiceLabel.userInteractionEnabled = YES;
+        [self.dice addObject:dieLabel];
+        switch (dieLabel.value) {
+            case 1:
+                [self addOneDieScore];
+                dieLabel.hasScored = YES;
+                break;
+            case 2:
+                [self addTwoDieScore];
+                break;
+            case 3:
+                [self addThreeDieScore];
+                break;
+            case 4:
+                [self addFourDieScore];
+                break;
+            case 5:
+                [self addFiveDieScore];
+                dieLabel.hasScored = YES;
+                break;
+            case 6:
+                [self addSixDieScore];
+                break;
+            default:
+                break;
+        }
+    }
+    else if ([self.dice containsObject:dieLabel]) {
+        self.currentRoundSelectedDice--;
+        [self.dice removeObject:dieLabel];
+        dieLabel.isTapped = NO;
+        [dieLabel displayNumber:dieLabel.value];
+        if (self.currentRoundSelectedDice == 0) {
+            self.gatherDiceLabel.userInteractionEnabled = NO;
+        }
+        switch (dieLabel.value) {
+            case 1:
+                [self subOneDieScore];
+                dieLabel.hasScored = NO;
+                break;
+            case 2:
+                [self subTwoDieScore];
+                break;
+            case 3:
+                [self subThreeDieScore];
+                break;
+            case 4:
+                [self subFourDieScore];
+                break;
+            case 5:
+                [self subFiveDieScore];
+                dieLabel.hasScored = NO;
+                break;
+            case 6:
+                [self subSixDieScore];
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    if (self.dice.count == 6) {
+        BOOL hotDice = [self checkHotDice];
+        if (hotDice) {
+            [self hotDiceRoll];
+        }
+    }
+
+    if (self.currentRoundSelectedDice > 0 && self.score > 0) {
+        self.bankButton.enabled = YES;
+    }
+    else {
+        self.bankButton.enabled = NO;
+    }
+}
+
+
+#pragma mark - Scoring Methods
+-(void)addOneDieScore {
+    self.ones++;
+    switch (self.ones) {
+        case 1:
+        case 2:
+            self.score += 100;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 3:
+            self.score += 800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 4:
+            self.score += 1800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 5:
+            self.score += 2800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 6:
+            self.score += 3800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)subOneDieScore {
+    self.ones--;
+    switch (self.ones) {
+        case 0:
+        case 1:
+            self.score -= 100;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 2:
+            self.score -= 800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 3:
+            self.score -= 1800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 4:
+            self.score -= 2800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 5:
+            self.score -= 3800;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)addTwoDieScore {
+    self.twos++;
+    switch (self.twos) {
+        case 1:
+        case 2:
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 2) {
+                    d.hasScored = YES;
+                }
+            }
+            self.score += 200;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)subTwoDieScore {
+    self.twos--;
+    switch (self.twos) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 2) {
+                    d.hasScored = NO;
+                }
+            }
+            self.score -= 200;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)addThreeDieScore {
+    self.threes++;
+    switch (self.threes) {
+        case 1:
+        case 2:
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 3) {
+                    d.hasScored = YES;
+                }
+            }
+            self.score += 300;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)subThreeDieScore {
+    self.threes--;
+    switch (self.threes) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 3) {
+                    d.hasScored = NO;
+                }
+            }
+            self.score -= 300;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)addFourDieScore {
+    self.fours++;
+    switch (self.fours) {
+        case 1:
+        case 2:
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 4) {
+                    d.hasScored = YES;
+                }
+            }
+            self.score += 400;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)subFourDieScore {
+    self.fours--;
+    switch (self.fours) {
+        case 0:
+        case 1:
+                break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 4) {
+                    d.hasScored = NO;
+                }
+            }
+            self.score -= 400;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)addFiveDieScore {
+    self.fives++;
+    switch (self.fives) {
+        case 1:
+        case 2:
+            self.score +=  50;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 3:
+            self.score += 400;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 4:
+        case 5:
+        case 6:
+            self.score += 500;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)subFiveDieScore {
+    self.fives--;
+    switch (self.fives) {
+        case 0:
+        case 1:
+            self.score -= 50;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 2:
+            self.score -=  400;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        case 3:
+        case 4:
+        case 5:
+            self.score -= 500;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)addSixDieScore {
+    self.sixes++;
+    switch (self.sixes) {
+        case 1:
+        case 2:
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 6) {
+                    d.hasScored = YES;
+                }
+            }
+            self.score += 600;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)subSixDieScore {
+    self.sixes--;
+    switch (self.sixes) {
+        case 0:
+        case 1:
+                break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            for (DieLabel *d in self.dice) {
+                if (d.value == 6) {
+                    d.hasScored = NO;
+                }
+            }
+            self.score -= 600;
+            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
+            break;
+        default:
+            break;
+    }
+}
+
+
+#pragma mark - Roll/Bank Button Actions
+- (IBAction)onBankButtonPressed:(UIButton *)sender {
+    self.bankButton.enabled = NO;
+    for (DieLabel *d in self.dice) {
+        d.userInteractionEnabled = NO;
+    }
+    if (self.playerNumber == 1) {
+        self.playerOneScore += self.score;
+        self.score = 0;
+        self.playerNumber = 2;
+        [self.dice removeAllObjects];
+        [self reset];
+        self.playerOneScoreLabel.text = [NSString stringWithFormat:@"Player 1 Score: %i", self.playerOneScore];
+        self.currentScore.text = @"Current Round Score: 0";
+        self.currentPlayerLabel.text = @"Player 2's Turn";
+        [self checkWinner];
+    }
+    else {
+        self.playerTwoScore += self.score;
+        self.score = 0;
+        self.playerNumber = 1;
+        [self.dice removeAllObjects];
+        [self reset];
+        self.playerTwoScoreLabel.text = [NSString stringWithFormat:@"Player 2 Score: %i", self.playerTwoScore];
+        self.currentScore.text = @"Current Round Score: 0";
+        self.currentPlayerLabel.text = @"Player 1's Turn";
+        [self checkWinner];
     }
 }
 
@@ -204,198 +748,14 @@
     self.fours = 0;
     self.fives = 0;
     self.sixes = 0;
+    self.currentRoundSelectedDice = 0;
 
     self.rollButton.enabled = NO;
-
+    self.bankButton.enabled = NO;
+    
 }
 
--(void)dieLabel:(DieLabel *)dieLabel {
-    if (![self.dice containsObject:dieLabel]) {
-        self.gatherDiceLabel.userInteractionEnabled = YES;
-        [self.dice addObject:dieLabel];
-
-        switch (dieLabel.value) {
-            case 1:
-                [self addOneDieScore];
-                break;
-            case 2:
-                [self addTwoDieScore];
-                break;
-            case 3:
-                [self addThreeDieScore];
-                break;
-            case 4:
-                [self addFourDieScore];
-                break;
-            case 5:
-                [self addFiveDieScore];
-                break;
-            case 6:
-                [self addSixDieScore];
-                break;
-            default:
-                break;
-        }
-    }
-}
-
--(void) reset{
-    self.dieLabel.isTapped = NO;
-    self.dieLabel2.isTapped = NO;
-    self.dieLabel3.isTapped = NO;
-    self.dieLabel4.isTapped = NO;
-    self.dieLabel5.isTapped = NO;
-    self.dieLabel6.isTapped = NO;
-    self.rollButton.enabled = NO;
-    self.gatherDiceLabel.userInteractionEnabled = YES;
-}
-
-
--(void)addOneDieScore {
-    self.ones++;
-    switch (self.ones) {
-        case 1:
-        case 2:
-            self.score += 100;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        case 3:
-            self.score += 800;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        case 4:
-            self.score += 1800;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        case 5:
-            self.score += 2800;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        case 6:
-            self.score += 3800;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        default:
-            break;
-    }
-}
-
--(void)addTwoDieScore {
-    self.twos++;
-    switch (self.twos) {
-        case 1:
-        case 2:
-            break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-            self.score += 200;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        default:
-            break;
-    }
-}
-
--(void)addThreeDieScore {
-    self.threes++;
-    switch (self.threes) {
-        case 1:
-        case 2:
-            break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-            self.score += 300;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        default:
-            break;
-    }
-}
-
--(void)addFourDieScore {
-    self.fours++;
-    switch (self.fours) {
-        case 1:
-        case 2:
-            break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-            self.score += 400;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        default:
-            break;
-    }
-}
-
--(void)addFiveDieScore {
-    self.fives++;
-    switch (self.fives) {
-        case 1:
-        case 2:
-            self.score +=  50;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        case 3:
-            self.score += 400;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        case 4:
-        case 5:
-        case 6:
-            self.score += 500;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        default:
-            break;
-    }
-}
-
--(void)addSixDieScore {
-    self.sixes++;
-    switch (self.sixes) {
-        case 1:
-        case 2:
-            break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-            self.score += 600;
-            self.currentScore.text = [NSString stringWithFormat:@"Current Round Score: %i", self.score];
-            break;
-        default:
-            break;
-    }
-}
-
-- (IBAction)onBankButtonPressed:(UIButton *)sender {
-    if (self.playerNumber == 1) {
-        self.playerOneScore += self.score;
-        self.score = 0;
-        self.playerNumber = 2;
-        [self.dice removeAllObjects];
-        [self reset];
-        self.playerOneScoreLabel.text = [NSString stringWithFormat:@"Player 1 Score: %i", self.playerOneScore];
-        self.currentScore.text = @"Current Round Score: 0";
-    }
-    else {
-        self.playerTwoScore += self.score;
-        self.score = 0;
-        self.playerNumber = 1;
-        [self.dice removeAllObjects];
-        [self reset];
-        self.playerTwoScoreLabel.text = [NSString stringWithFormat:@"Player 2 Score: %i", self.playerTwoScore];
-        self.currentScore.text = @"Current Round Score: 0";
-    }
-}
-
+#pragma mark - Check Farkle Methods
 -(void)farkle {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"You Farkled" message:@"Your turn is over" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -407,6 +767,7 @@
             [self.dice removeAllObjects];
             [self reset];
             self.currentScore.text = @"Current Round Score: 0";
+            self.currentPlayerLabel.text = @"Player 2's Turn";
         }
         else {
             self.playerNumber = 1;
@@ -414,6 +775,7 @@
             [self.dice removeAllObjects];
             [self reset];
             self.currentScore.text = @"Current Round Score: 0";
+            self.currentPlayerLabel.text = @"Player 1's Turn";
         }
     }];
 }
@@ -779,6 +1141,16 @@
              self.dieLabel5.isTapped   &&
              self.dieLabel6.isTapped) {
         if (self.dieLabel3.value != 1 && self.dieLabel3.value != 5) {
+            [self farkle];
+        }
+    }
+    else if (self.dieLabel.isTapped   &&
+             !self.dieLabel2.isTapped   &&
+             self.dieLabel3.isTapped   &&
+             self.dieLabel4.isTapped   &&
+             self.dieLabel5.isTapped   &&
+             self.dieLabel6.isTapped) {
+        if (self.dieLabel2.value != 1 && self.dieLabel2.value != 5) {
             [self farkle];
         }
     }

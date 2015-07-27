@@ -14,6 +14,7 @@
 @property int value;
 @property BOOL isTapped;
 @property CGPoint origin;
+@property BOOL hasScored;
 
 -(void)roll;
 -(void)displayNumber:(int)number;
